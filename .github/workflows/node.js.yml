@@ -6,8 +6,6 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -28,4 +26,16 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm test
+    - name: Upload zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: zipped folder
+          path: public/
+    - name: Upload to S3
+      uses: shallwefootball/s3-upload-action@master
+      id: S3
+      with:
+        aws_key_id: ${{secrets.AWS_KEY_ID}}
+        aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+        aws_bucket: arn:aws:s3:::test-bucket-save-reserve-11
+        source_dir: public/
