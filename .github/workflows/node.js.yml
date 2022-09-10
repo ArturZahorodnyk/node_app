@@ -37,5 +37,5 @@ jobs:
       with:
         aws_key_id: ${{secrets.AWS_KEY_ID}}
         aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        aws_bucket: test-bucket-save-reserve-11
+        aws_bucket: test-bucket-1123451223
         source_dir: public/
