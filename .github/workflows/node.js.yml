@@ -19,10 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Create dir
-      run: mkdir ./artifacts
-      
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -42,9 +39,6 @@ jobs:
         
     - name: Zip folder 
       run: zip -r cs-glass_version-${{ steps.time.outputs.time }}.zip public/
-      
-    - name: Copy zip
-      run: cp ./cs-glass_version*.zip ./artifacts
       
     - name: Upload binary to S3 bucket
       uses: tpaschalis/s3-sync-action@master
