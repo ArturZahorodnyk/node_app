@@ -41,10 +41,8 @@ jobs:
         format: 'YYYY-MM-DD-HH-mm'
         
     - name: Zip folder 
-      run: zip -r cs-glass_version-${{ steps.time.outputs.time }}.zip public/
-      
-    - run: cp cs-glass_version-${{ steps.time.outputs.time }}.zip ./artifacts
-      
+      run: zip -r ./artifacts/cs-glass_version-${{ steps.time.outputs.time }}.zip public/
+            
     - name: Upload S3    
       uses: shallwefootball/s3-upload-action@master
       id: S3
