@@ -32,8 +32,7 @@ jobs:
       with:
         timeZone: 3
         format: 'YYYY-MM-DD-HH-mm'
-    - name: Upload zip
-      uses: actions/upload-artifact@v2
+    - uses: montudor/action-zip@v1
       with:
-        name: cs-glass_version-${{ steps.time.outputs.time }}
-        path: public/
+        args: zip -qq -r cs-glass_version-${{ steps.time.outputs.time }}.zip public
+    
