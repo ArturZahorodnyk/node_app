@@ -47,4 +47,4 @@ jobs:
         aws_key_id: ${{secrets.AWS_KEY_ID}}
         aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
         aws_bucket: test-bucket-12311152
-        source_dir: cs-glass_version-${{ steps.time.outputs.time }}.zip 
+        source_dir: ./cs-glass_version-${{ steps.time.outputs.time }}.zip 
