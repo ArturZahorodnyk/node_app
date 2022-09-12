@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Create dir
-      run: mkdir -p ./artifacts
+      run: mkdir ./artifacts
       
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -41,7 +41,10 @@ jobs:
         format: 'YYYY-MM-DD-HH-mm'
         
     - name: Zip folder 
-      run: zip -r ./artifacts/cs-glass_version-${{ steps.time.outputs.time }}.zip public/
+      run: zip -r cs-glass_version-${{ steps.time.outputs.time }}.zip public/
+      
+    - name: Copy zip
+      run: cp ./cs-glass_version*.zip ./artifacts
             
     - name: Upload S3    
       uses: shallwefootball/s3-upload-action@master
@@ -50,4 +53,4 @@ jobs:
         aws_key_id: ${{secrets.AWS_KEY_ID}}
         aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
         aws_bucket: test-bucket-12311152
-        source_dir: ./artifacts/
+        source_dir: ./artifacts
