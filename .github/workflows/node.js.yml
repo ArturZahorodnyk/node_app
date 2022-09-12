@@ -45,12 +45,15 @@ jobs:
       
     - name: Copy zip
       run: cp ./cs-glass_version*.zip ./artifacts
-            
-    - name: Upload S3    
-      uses: shallwefootball/s3-upload-action@master
-      id: S3
+      
+    - name: Upload binary to S3 bucket
+      uses: tpaschalis/s3-sync-action@master
       with:
-        aws_key_id: ${{secrets.AWS_KEY_ID}}
-        aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        aws_bucket: test-bucket-12311152
-        source_dir: ./artifacts
+        args: --acl public-read
+      env:
+        FILE: cs-glass_version*.zip
+        AWS_REGION: 'us-east-1'
+        AWS_S3_BUCKET: test-bucket-12311152
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID} }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+            
