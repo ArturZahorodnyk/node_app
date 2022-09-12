@@ -7,6 +7,14 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  BUCKET_NAME : "my-test-1231125629"
+  AWS_REGION : "us-east-1"
+
+permissions:
+    id-token: write   # This is required for requesting the JWT
+    contents: read    # This is required for actions/checkout
+
 jobs:
   build:
 
@@ -40,13 +48,13 @@ jobs:
     - name: Zip folder 
       run: zip -r cs-glass_version-${{ steps.time.outputs.time }}.zip public/
       
-    - name: Upload binary to S3 bucket
-      uses: tpaschalis/s3-sync-action@master
-      with:
-        args: --acl public-read
-      env:
-        FILE: cs-glass_version*.zip
-        AWS_REGION: 'us-east-1'
-        AWS_S3_BUCKET: test-bucket-12311152
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+    - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::932755430313:role/s3-role
+          role-session-name: samplerolesession
+          aws-region: ${{ env.AWS_REGION }}
+      # Upload a file to AWS s3
+      - name:  Copy index.html to s3
+        run: |
+          aws s3 cp ./cs-glass_version-*.zip s3://${{ env.BUCKET_NAME }}/
