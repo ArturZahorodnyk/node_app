@@ -43,7 +43,7 @@ jobs:
     - name: Zip folder 
       run: zip -r cs-glass_version-${{ steps.time.outputs.time }}.zip public/
       
-    - run: cp cs-glass_version-${{ steps.time.outputs.time }}.zip ./artifacts
+    - run: cp cs-glass_version-${{ steps.time.outputs.time }}.zip ./artifacts/
       
     - name: Upload S3    
       uses: shallwefootball/s3-upload-action@master
