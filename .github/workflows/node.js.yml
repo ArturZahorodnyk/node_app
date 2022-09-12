@@ -35,5 +35,5 @@ jobs:
     - name: Upload zip
       uses: actions/upload-artifact@v2
       with:
-        name: cs-glass_version-{ time.outputs.time}
+        name: cs-glass_version-"${{ steps.time.outputs.time }}"
         path: public/
