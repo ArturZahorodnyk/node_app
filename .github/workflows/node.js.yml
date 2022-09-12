@@ -26,16 +26,14 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
+    - name: Get Time
+      id: time
+      uses: nanzm/get-time-action@v1.1
+      with:
+        timeZone: 8
+        format: 'YYYY-MM-DD-HH-mm'
     - name: Upload zip
       uses: actions/upload-artifact@v2
       with:
-        name: zipped folder
+        name: cs-glass_version-{ steps.time.outputs.time}
         path: public/
-    - name: Upload to S3
-      uses: shallwefootball/s3-upload-action@master
-      id: S3
-      with:
-        aws_key_id: ${{secrets.AWS_KEY_ID}}
-        aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        aws_bucket: test-bucket-1123451223
-        source_dir: public/
