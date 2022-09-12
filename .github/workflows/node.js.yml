@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Create dir
-      run: mdkir -p ./arifacts
+      run: mkdir -p ./arifacts
       
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
