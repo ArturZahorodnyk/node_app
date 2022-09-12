@@ -32,7 +32,5 @@ jobs:
       with:
         timeZone: 3
         format: 'YYYY-MM-DD-HH-mm'
-    - uses: montudor/action-zip@v1
-      with:
-        args: zip -qq -r cs-glass_version-${{ steps.time.outputs.time }}.zip public
-    
+    - name: Zip folder 
+      run: zip -r cs-glass_version-${{ steps.time.outputs.time }}.zip public/
