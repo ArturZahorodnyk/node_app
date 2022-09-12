@@ -51,7 +51,7 @@ jobs:
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::932755430313:role/s3-role
+        role-to-assume: arn:aws:iam::932755430313:role/test-s3
         role-session-name: samplerolesession
         aws-region: ${{ env.AWS_REGION }}
       # Upload a file to AWS s3
