@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Create dir for artifacts
-      run: mkdir -p ./artifacts/${{ github.repository }}
+      run: mkdir -p ./artifacts
       
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -40,7 +40,7 @@ jobs:
         format: 'YYYY-MM-DD-HH-mm'
         
     - name: Zip folder 
-      run: zip -r ./artifacts/${{ github.repository }}/cs-glass_version-${{ steps.time.outputs.time }}.zip public/
+      run: zip -r ./artifacts/cs-glass_version-${{ steps.time.outputs.time }}.zip public/
       
     - name: Upload S3    
       uses: shallwefootball/s3-upload-action@master
