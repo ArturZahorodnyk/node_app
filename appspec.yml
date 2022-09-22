@@ -5,10 +5,10 @@ files:
     destination: /home/ec2-user/node_app/
 hooks:
   AfterInstall:
-   - location: setup.sh
+   - location: ./setup.sh
      timeout: 300
      runas: root
   ApplicationStart:
-   - location: run.sh
+   - location: ./run.sh
      timeout: 300
      runas: root
