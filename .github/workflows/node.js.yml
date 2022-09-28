@@ -1,60 +1,26 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Node.js CI
-
+ame: CI/CD Pipeline
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
 
-env:
-  BUCKET_NAME : my-test-1231125629
-  AWS_REGION  : us-east-1
-
-permissions:
-    id-token: write   # This is required for requesting the JWT
-    contents: read    # This is required for actions/checkout
-
-jobs:
-  build:
-
+  continuous-deployment:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x,]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+    needs: [continuous-integration]
+    if: github.ref == 'refs/heads/main'
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        
-    - run: npm ci
-    
-    - run: npm run build --if-present
-    
-    - name: Get Time
-      id: time
-      uses: nanzm/get-time-action@v1.1
-      with:
-        timeZone: 3
-        format: 'YYYY-MM-DD-HH-mm'
-        
-    - name: Zip folder 
-      run: zip -r cs-glass_version-${{ steps.time.outputs.time }}.zip public/
-      
-    - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: arn:aws:iam::932755430313:role/test-s3
-        role-session-name: samplerolesession
-        aws-region: ${{ env.AWS_REGION }}
-      # Upload a file to AWS s3
-    - name:  Copy index.html to s3
-      run: |
-        aws s3 cp ./cs-glass_version-*.zip s3://${{ env.BUCKET_NAME }}/
+     # Step 1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+     # Step 2
+      - name: Create CodeDeploy Deployment
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name Git_Application \
+            --deployment-group-name development_gropup \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
