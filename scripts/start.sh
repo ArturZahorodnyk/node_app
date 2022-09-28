@@ -1,7 +1,11 @@
 #!/bin/bash
 
-npm run build /home/ec2-user/node_app/
+sudo npm i sass --save-dev
 
-cp -r /home/ec2-user/node_app/dist/* /usr/share/nginx/html
+sudo npm install /home/ec2-user/node_app/
+
+sudo npm run build /home/ec2-user/node_app/
+
+sudo cp -r /home/ec2-user/node_app/dist/* /usr/share/nginx/html
 
 sudo systemctl start nginx
